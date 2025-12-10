@@ -25,10 +25,13 @@ export class UIController {
 
         if (!this._soundStarted) {
             this._soundStarted = true;
-            const soundComp = this.pipeEl.components.sound;
-            if (soundComp) {
-                soundComp.playSound();
-                console.log("sound complete");
+            const audioEl = document.getElementById("pipeSound");
+            if (audioEl) {
+                audioEl.pause();
+                audioEl.currentTime = 0;
+                audioEl.play().catch((e) => console.warn("Audio play error", e));
+            } else {
+                console.warn("pipeSound element not found");
             }
         }
 
@@ -36,6 +39,7 @@ export class UIController {
         const scale = this.isBig ? "0.8 0.8 0.8" : "0.4 0.4 0.4";
         this.pipeEl.setAttribute("scale", scale);
     }
+
 
     toggleHighContrast() {
         this.isHighContrast = !this.isHighContrast;
