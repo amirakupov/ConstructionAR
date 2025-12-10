@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>MindAR AR Exercise</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <script type="module" src="js/app.js"></script>
+</head>
+<body>
+<div id="tutorial" class="tutorial">
+    <div class="tutorial-content">
+        <h2>How to use this AR demo</h2>
+        <ol>
+            <li>Point the camera at the printed marker card.</li>
+            <li>Wait until the 3D objects appear on the card.</li>
+            <li>Tap the objects to change their color.</li>
+            <li>Use the top menu to resize the pipe and toggle high contrast mode.</li>
+        </ol>
+        <button id="btnTutorialClose" class="ui-button">Got it</button>
+    </div>
+</div>
+
+<div id="ui">
+    <button id="btnScale" class="ui-button">Toggle Pipe Size</button>
+    <button id="btnContrast" class="ui-button">High Contrast: Off</button>
+</div>
+<a-scene
+        mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/card-example/card.mind;"
+        color-space="sRGB"
+        renderer="colorManagement: true, physicallyCorrectLights: true"
+        vr-mode-ui="enabled: false"
+        device-orientation-permission-ui="enabled: false"
+        embedded
+        cursor="rayOrigin: mouse"
+        raycaster="objects: .clickable"
+>
+    <a-assets>
+        <img
+                id="markerImage"
+                crossorigin="anonymous"
+                src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/card-example/card.png"
+        />
+        <audio id="pipeSound" src="./audio/pipe-loop.mp3" preload="auto"></audio>
+    </a-assets>
+
+    <a-camera look-controls="enabled: false"></a-camera>
+    <a-entity id="markerRoot" mindar-image-target="targetIndex: 0">
+        <a-plane
+                src="#markerImage"
+                position="0 0 0"
+                width="1"
+                height="0.6"
+                rotation="0 0 0"
+        ></a-plane>
+        <a-box
+                id="box"
+                class="clickable"
+                position="-0.4 0.25 0.1"
+                depth="0.2"
+                height="0.2"
+                width="0.2"
+                color="#FF0000"
+                toggle-color="#00FFAA"
+        ></a-box>
+        <a-sphere
+                id="sphere"
+                class="clickable"
+                position="0 0.25 0.1"
+                radius="0.15"
+                color="#0000FF"
+                toggle-color="#FFFF00"
+        ></a-sphere>
+        <a-cylinder
+                id="cylinder"
+                class="clickable"
+                position="0.4 0.25 0.1"
+                radius="0.08"
+                height="0.3"
+                color="#00FF00"
+                toggle-color="#FF00FF"
+        ></a-cylinder>
+        <a-box
+                id="pipe"
+                position="0 -0.1 0.2"
+                width="0.7"
+                height="0.05"
+                depth="0.05"
+                color="#888888"
+                sound="src: #pipeSound; autoplay: false; loop: true; positional: true; distanceModel: inverse; refDistance: 0.5"
+        ></a-box>
+    </a-entity>
+</a-scene>
+</body>
+</html>
