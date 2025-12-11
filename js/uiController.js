@@ -40,7 +40,8 @@ export class UIController {
         }
         if (!this._soundStarted) {
             this._soundStarted = true;
-            const audioEl = document.getElementById("pipeSound");
+            const audioEl = document.getElementById("helmetSound");
+            console.log("audioEl", audioEl);
             if (audioEl) {
                 audioEl.pause();
                 audioEl.currentTime = 0;

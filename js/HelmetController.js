@@ -16,7 +16,7 @@ export class HelmetController {
 
     playClickSound() {
         const audio = this.audioEl;
-        if (!audio) return;
+        console.log(audio + "audio playing");
         audio.pause();
         audio.currentTime = 0;
 
