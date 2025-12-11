@@ -1,18 +1,19 @@
 export class UIController {
-    constructor({ pipeEl }) {
-        this.pipeEl = pipeEl;
+    constructor({ targetEl }) {
+        this.targetEl = targetEl;
 
-        this.btnScale = document.getElementById("btnScale");
+        this.scaleSlider = document.getElementById("scaleSlider");
         this.btnContrast = document.getElementById("btnContrast");
 
-        this.isBig = false;
         this.isHighContrast = false;
     }
 
     init() {
-        if (this.btnScale) {
-            this.btnScale.addEventListener("click", () => this.togglePipeSize());
+        if (this.scaleSlider) {
+            this.scaleSlider.addEventListener("input", () => this.updateScaleFromSlider());
+            this.updateScaleFromSlider();
         }
+
         if (this.btnContrast) {
             this.btnContrast.addEventListener("click", () =>
                 this.toggleHighContrast()
@@ -20,9 +21,23 @@ export class UIController {
         }
     }
 
-    togglePipeSize() {
-        if (!this.pipeEl) return;
+    updateScaleFromSlider() {
+        if (!this.targetEl || !this.scaleSlider) return;
 
+        const value = parseFloat(this.scaleSlider.value || "0.4");
+        const scale = `${value} ${value} ${value}`;
+        this.targetEl.setAttribute("scale", scale);
+    }
+
+    toggleHighContrast() {
+        this.isHighContrast = !this.isHighContrast;
+        document.body.classList.toggle("high-contrast", this.isHighContrast);
+
+        if (this.btnContrast) {
+            this.btnContrast.textContent = `High Contrast: ${
+                this.isHighContrast ? "On" : "Off"
+            }`;
+        }
         if (!this._soundStarted) {
             this._soundStarted = true;
             const audioEl = document.getElementById("pipeSound");
@@ -35,21 +50,6 @@ export class UIController {
             }
         }
 
-        this.isBig = !this.isBig;
-        const scale = this.isBig ? "0.8 0.8 0.8" : "0.4 0.4 0.4";
-        this.pipeEl.setAttribute("scale", scale);
-    }
-
-
-    toggleHighContrast() {
-        this.isHighContrast = !this.isHighContrast;
-        document.body.classList.toggle("high-contrast", this.isHighContrast);
-
-        if (this.btnContrast) {
-            this.btnContrast.textContent = `High Contrast: ${
-                this.isHighContrast ? "On" : "Off"
-            }`;
-        }
         const clickable = document.querySelectorAll(".clickable");
         clickable.forEach((el) => {
             if (this.isHighContrast) {
@@ -59,10 +59,9 @@ export class UIController {
                     emissiveIntensity: 0.4,
                 });
             } else {
-                if (el.id === "box") el.setAttribute("material", "color", "#FF0000");
-                if (el.id === "sphere") el.setAttribute("material", "color", "#0000FF");
-                if (el.id === "cylinder")
-                    el.setAttribute("material", "color", "#00FF00");
+                if (el.id === "helmet") {
+                    el.removeAttribute("material");
+                }
             }
         });
     }

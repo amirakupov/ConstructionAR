@@ -5,7 +5,7 @@ window.addEventListener("DOMContentLoaded", () => {
     app.init();
 });
 window.addEventListener("click", () => {
-    const audioEl = document.getElementById("pipeSound");
+    const audioEl = document.getElementById("helmetSound");
     if (audioEl) {
         audioEl.muted = true;
         audioEl.play().then(() => {

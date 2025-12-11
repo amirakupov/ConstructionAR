@@ -12,7 +12,7 @@
 <body>
 <div id="tutorial" class="tutorial">
     <div class="tutorial-content">
-        <h2>How to use this AR demo</h2>
+        <h2>How to use this AR</h2>
         <ol>
             <li>Point the camera at the printed marker card.</li>
             <li>Wait until the 3D objects appear on the card.</li>
@@ -22,11 +22,21 @@
         <button id="btnTutorialClose" class="ui-button">Got it</button>
     </div>
 </div>
-
 <div id="ui">
-    <button id="btnScale" class="ui-button">Toggle Pipe Size</button>
+    <label class="ui-label" for="scaleSlider">
+        Size
+        <input
+                id="scaleSlider"
+                type="range"
+                min="0.2"
+                max="1.5"
+                step="0.1"
+                value="0.4" />
+    </label>
+
     <button id="btnContrast" class="ui-button">High Contrast: Off</button>
 </div>
+
 <a-scene
         mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/card-example/card.mind;"
         color-space="sRGB"
@@ -35,7 +45,7 @@
         device-orientation-permission-ui="enabled: false"
         embedded
         cursor="rayOrigin: mouse"
-        raycaster="objects: .clickable"
+        raycaster="objects: .clickable, .placeable"
 >
     <a-assets>
         <img
@@ -43,54 +53,42 @@
                 crossorigin="anonymous"
                 src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/card-example/card.png"
         />
-        <audio id="pipeSound" src="./audio/new-sound.mp3" preload="auto"></audio>
+        <a-asset-item id="helmetModel" src="./models/scene.gltf"></a-asset-item>
+        <audio id="helmetSound" src="./audio/new-sound.mp3" preload="auto"></audio>
     </a-assets>
 
     <a-camera look-controls="enabled: false"></a-camera>
+
     <a-entity id="markerRoot" mindar-image-target="targetIndex: 0">
         <a-plane
                 src="#markerImage"
                 position="0 0 0"
                 width="1"
                 height="0.6"
+                rotation="0 0 0">
+        </a-plane>
+        <a-entity
+                id="helmet"
+                class="clickable"
+                gltf-model="#helmetModel"
+                position="0 0.1 0.2"
+                scale="0.4 0.4 0.4"
+                drag-rotate>
+        </a-entity>
+        <a-plane
+                id="placementPlane"
+                class="placeable"
+                position="0.75 0.75 0.50"
+                width="1"
+                height="0.6"
                 rotation="0 0 0"
-        ></a-plane>
-        <a-box
-                id="box"
-                class="clickable"
-                position="-0.4 0.25 0.1"
-                depth="0.2"
-                height="0.2"
-                width="0.2"
-                color="#FF0000"
-                toggle-color="#00FFAA"
-        ></a-box>
-        <a-sphere
-                id="sphere"
-                class="clickable"
-                position="0 0.25 0.1"
-                radius="0.15"
-                color="#0000FF"
-                toggle-color="#FFFF00"
-        ></a-sphere>
-        <a-cylinder
-                id="cylinder"
-                class="clickable"
-                position="0.4 0.25 0.1"
-                radius="0.08"
-                height="0.3"
-                color="#00FF00"
-                toggle-color="#FF00FF"
-        ></a-cylinder>
-        <a-box
-                id="pipe"
-                position="0 -0.1 0.2"
-                width="0.7"
-                height="0.05"
-                depth="0.05"
-                color="#888888"
-        ></a-box>
+                scale="0.4 0.4 0.4"
+                material="color: #ffffff; opacity: 0; transparent: true"
+                tap-to-place="target: #helmet">
+        </a-plane>
     </a-entity>
 </a-scene>
+
+
 </body>
 </html>
